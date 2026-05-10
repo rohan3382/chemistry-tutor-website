@@ -1,0 +1,97 @@
+import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button";
+
+export default function ChemistryTutorWebsite() { const [message, setMessage] = useState("");
+
+const whatsappNumber = "9779804989338"; const whatsappLink = https://wa.me/${whatsappNumber};
+
+return ( <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+
+{/* HERO SECTION */}
+  <div className="text-center py-16 px-4 bg-blue-900 text-white">
+    <h1 className="text-4xl font-bold">Online Chemistry Tutoring</h1>
+    <p className="mt-3 text-lg">
+      MSc Chemistry Tutor for NEB Class 11 & 12
+    </p>
+    <p className="mt-2 text-sm opacity-80">
+      Concept-based learning • Exam-focused preparation • Easy understanding
+    </p>
+
+    <div className="mt-6 flex justify-center gap-4 flex-wrap">
+      <Button className="bg-green-500 hover:bg-green-600">
+        Book Free Demo
+      </Button>
+
+      <a href={whatsappLink} target="_blank">
+        <Button className="bg-white text-blue-900 hover:bg-gray-200">
+          WhatsApp Now
+        </Button>
+      </a>
+    </div>
+  </div>
+
+  {/* ABOUT */}
+  <div className="max-w-4xl mx-auto p-6">
+    <Card className="mt-6">
+      <CardContent className="p-6">
+        <h2 className="text-2xl font-bold">About Tutor</h2>
+        <p className="text-gray-600 mt-2">
+          I am an MSc Chemistry graduate providing online tuition for NEB
+          students. My teaching style focuses on clear concepts, problem
+          solving, and exam preparation techniques.
+        </p>
+      </CardContent>
+    </Card>
+
+    {/* COURSES */}
+    <Card className="mt-6">
+      <CardContent className="p-6">
+        <h2 className="text-2xl font-bold">Courses Offered</h2>
+        <ul className="list-disc ml-6 text-gray-600 mt-2">
+          <li>Class 11 Chemistry (NEB)</li>
+          <li>Class 12 Chemistry (NEB)</li>
+          <li>Entrance Exam Preparation</li>
+          <li>Basic Bachelor Chemistry</li>
+        </ul>
+      </CardContent>
+    </Card>
+
+    {/* PRICING */}
+    <Card className="mt-6">
+      <CardContent className="p-6">
+        <h2 className="text-2xl font-bold">Pricing</h2>
+        <p className="text-gray-600 mt-2">
+          Individual Class: NPR 500 – 1000/hour <br />
+          Group Class: NPR 500 – 1000/student
+        </p>
+      </CardContent>
+    </Card>
+
+    {/* CONTACT */}
+    <Card className="mt-6">
+      <CardContent className="p-6">
+        <h2 className="text-2xl font-bold">Contact</h2>
+
+        <p className="text-gray-600 mt-2">
+          📞 +977-9842671201 <br />
+          📧 yourmail@gmail.com
+        </p>
+
+        <textarea
+          className="w-full mt-4 p-2 border rounded"
+          placeholder="Write your message here..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+
+        <Button className="mt-3">Send Message</Button>
+      </CardContent>
+    </Card>
+  </div>
+
+  {/* FOOTER */}
+  <div className="text-center text-gray-500 py-6">
+    © 2026 Online Chemistry Tutoring | Nepal
+  </div>
+</div>
+
+); }
