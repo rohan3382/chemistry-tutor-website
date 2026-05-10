@@ -1,145 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Chemistry Tutor Nepal</title>
+import { useState, useEffect } from "react"; import { initializeApp, getApps } from "firebase/app"; import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth"; import { getFirestore, collection, addDoc, getDocs } from "firebase/firestore"; import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 
-<style>
-  body {
-    margin: 0;
-    font-family: Arial;
-    background: #f5f7fb;
-  }
+/* ================= FIREBASE CONFIG ================= */ const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "YOUR_AUTH_DOMAIN", projectId: "YOUR_PROJECT_ID", storageBucket: "YOUR_STORAGE_BUCKET", messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID" };
 
-  /* HEADER */
-  .header {
-    background: #1e3a8a;
-    color: white;
-    padding: 20px;
-    text-align: center;
-  }
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApps()[0]; const auth = getAuth(app); const db = getFirestore(app); const storage = getStorage(app);
 
-  .logo {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-  }
+/* ================= VERSION 4 ULTIMATE SYSTEM ================= */ export default function ChemistryTutorV4Ultimate() {
 
-  /* HERO */
-  .hero {
-    text-align: center;
-    padding: 40px;
-    background: white;
-  }
+/* AUTH */ const [user, setUser] = useState(null); const [email, setEmail] = useState(""); const [password, setPassword] = useState("");
 
-  .hero img {
-    width: 250px;
-    border-radius: 10px;
-    margin-top: 15px;
-  }
+/* BOOKING */ const [name, setName] = useState(""); const [message, setMessage] = useState(""); const [dateTime, setDateTime] = useState(""); const [bookings, setBookings] = useState([]);
 
-  /* SECTIONS */
-  .section {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-  }
+/* FILES */ const [pdf, setPdf] = useState(null); const [files, setFiles] = useState([]);
 
-  .card {
-    background: white;
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
-  }
+/* CHATBOT */ const [chat, setChat] = useState([]); const [input, setInput] = useState("");
 
-  /* BUTTON */
-  .btn {
-    background: #1e3a8a;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+/* WHATSAPP */ const whatsapp = "9779804989338"; const whatsappLink = https://wa.me/${whatsapp}?text=${encodeURIComponent("I want to join Chemistry class")};
 
-  .btn:hover {
-    background: #2f4db3;
-  }
+/* AUTH STATE */ useEffect(() => { onAuthStateChanged(auth, (u) => setUser(u)); }, []);
 
-  /* FOOTER */
-  .footer {
-    text-align: center;
-    padding: 15px;
-    background: #ddd;
-    margin-top: 20px;
-  }
+/* ================= AUTH ================= */ const register = async () => { await createUserWithEmailAndPassword(auth, email, password); };
 
-</style>
-</head>
+const login = async () => { await signInWithEmailAndPassword(auth, email, password); };
 
-<body>
+const logout = async () => { await signOut(auth); };
 
-<!-- HEADER -->
-<div class="header">
-  <!-- LOGO -->
-  <img class="logo" src="https://cdn-icons-png.flaticon.com/512/2909/2909769.png" alt="logo">
+/* ================= BOOKING ================= */ const bookClass = async () => { if (!name || !dateTime) return alert("Fill all fields");
 
-  <h1>Online Chemistry Tutoring</h1>
-  <p>MSc Chemistry Tutor (NEB Class 11 & 12)</p>
-</div>
+await addDoc(collection(db, "bookings"), {
+  name,
+  message,
+  dateTime,
+  created: new Date().toISOString()
+});
 
-<!-- HERO SECTION -->
-<div class="hero">
-  <h2>Learn Chemistry Easily & Smartly</h2>
-  <p>Concept-based teaching | Exam-focused preparation | Free demo class</p>
+alert("Booking sent");
+setName("");
+setMessage("");
+setDateTime("");
 
-  <!-- IMAGE -->
-  <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d" alt="chemistry lab">
+};
 
-  <br><br>
-  <button class="btn">Book Free Demo Class</button>
-</div>
+const loadBookings = async () => { const snap = await getDocs(collection(db, "bookings")); setBookings(snap.docs.map(d => d.data())); };
 
-<!-- ABOUT -->
-<div class="section">
+/* ================= PDF ================= */ const uploadPDF = async () => { if (!pdf) return; const pdfRef = ref(storage, pdfs/${Date.now()}-${pdf.name}); await uploadBytes(pdfRef, pdf); alert("PDF uploaded"); loadPDFs(); };
 
-  <div class="card">
-    <h2>👨‍🏫 About Tutor</h2>
-    <p>
-      MSc Chemistry tutor providing online classes for NEB students.
-      Focus on clear concepts, numericals, and exam success.
-    </p>
+const loadPDFs = async () => { const listRef = ref(storage, "pdfs/"); const res = await listAll(listRef); const urls = await Promise.all(res.items.map(getDownloadURL)); setFiles(urls); };
+
+/* ================= CHATBOT (SIMPLE AI RULES) ================= */ const sendMessage = () => { if (!input) return;
+
+const userMsg = { role: "user", text: input };
+
+let reply = "I am your Chemistry assistant. Ask about NEB syllabus, formulas or classes.";
+
+if (input.toLowerCase().includes("exam")) reply = "Focus on NCERT/NEB important questions and past papers.";
+if (input.toLowerCase().includes("organic")) reply = "Study functional groups and reaction mechanisms.";
+if (input.toLowerCase().includes("book")) reply = "Download notes from PDF section.";
+
+const botMsg = { role: "bot", text: reply };
+
+setChat([...chat, userMsg, botMsg]);
+setInput("");
+
+};
+
+/* ================= LOAD ================= */ useEffect(() => { loadBookings(); loadPDFs(); }, []);
+
+const isAdmin = user?.email === "admin@chemistry.com";
+
+/* ================= UI ================= */ return ( <div style={{ fontFamily: "Arial", background: "#f4f7fb", minHeight: "100vh" }}>
+
+{/* HEADER */}
+  <div style={{ background: "#0b2a5a", color: "white", padding: 25, textAlign: "center" }}>
+    <h1>🧪 Chemistry Tutor Nepal V4 Ultimate</h1>
+    <p>AI Chatbot + Booking + Payments + LMS System</p>
   </div>
 
-  <div class="card">
-    <h2>📚 Courses</h2>
-    <ul>
-      <li>Class 11 Chemistry (NEB)</li>
-      <li>Class 12 Chemistry (NEB)</li>
-      <li>Entrance Preparation</li>
-    </ul>
-  </div>
+  {/* AUTH */}
+  {!user ? (
+    <div style={{ padding: 20, maxWidth: 400, margin: "auto" }}>
+      <h2>Login System</h2>
+      <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
+      <input placeholder="Password" type="password" onChange={e => setPassword(e.target.value)} />
+      <button onClick={login}>Login</button>
+      <button onClick={register}>Register</button>
+    </div>
+  ) : (
+    <div style={{ padding: 20 }}>
 
-  <div class="card">
-    <h2>💰 Fees</h2>
-    <p>Individual: NPR 500–1000/hour</p>
-    <p>Group Class: NPR 500–800/student</p>
-  </div>
+      <button onClick={logout}>Logout</button>
 
-  <div class="card">
-    <h2>📞 Contact</h2>
-    <p>WhatsApp: +977-9804989338</p>
-    <p>Email: yourmail@gmail.com</p>
+      {/* BOOKING */}
+      <div style={{ background: "white", padding: 20, marginTop: 10 }}>
+        <h2>📅 Smart Booking System</h2>
+        <input placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
+        <input placeholder="Message" value={message} onChange={e => setMessage(e.target.value)} />
+        <input type="datetime-local" value={dateTime} onChange={e => setDateTime(e.target.value)} />
+        <button onClick={bookClass}>Book Class</button>
+      </div>
+
+      {/* PAYMENT (PLACEHOLDER) */}
+      <div style={{ background: "white", padding: 20, marginTop: 10 }}>
+        <h2>💳 Payment System</h2>
+        <p>eSewa / Khalti integration (setup required)</p>
+        <a href="https://esewa.com.np" target="_blank"><button>Pay via eSewa</button></a>
+        <a href="https://khalti.com" target="_blank"><button>Pay via Khalti</button></a>
+      </div>
+
+      {/* AI CHATBOT */}
+      <div style={{ background: "white", padding: 20, marginTop: 10 }}>
+        <h2>🤖 Chemistry AI Assistant</h2>
+
+        <div style={{ maxHeight: 150, overflowY: "auto" }}>
+          {chat.map((c, i) => (
+            <p key={i}><b>{c.role}:</b> {c.text}</p>
+          ))}
+        </div>
+
+        <input value={input} onChange={e => setInput(e.target.value)} placeholder="Ask Chemistry question" />
+        <button onClick={sendMessage}>Send</button>
+      </div>
+
+      {/* PDF */}
+      <div style={{ background: "white", padding: 20, marginTop: 10 }}>
+        <h2>📄 Study Materials</h2>
+        <input type="file" onChange={e => setPdf(e.target.files[0])} />
+        <button onClick={uploadPDF}>Upload PDF</button>
+
+        {files.map((f, i) => (
+          <p key={i}><a href={f} target="_blank">Download {i + 1}</a></p>
+        ))}
+      </div>
+
+      {/* WHATSAPP */}
+      <a href={whatsappLink} target="_blank">
+        <button style={{ background: "green", color: "white", padding: 10, marginTop: 20 }}>
+          💬 WhatsApp Chat
+        </button>
+      </a>
+
+      {/* ADMIN */}
+      {isAdmin && (
+        <div style={{ background: "white", padding: 20, marginTop: 20 }}>
+          <h2>🛠 Admin Dashboard</h2>
+          {bookings.map((b, i) => (
+            <p key={i}>📌 {b.name} | {b.dateTime} | {b.message}</p>
+          ))}
+        </div>
+      )}
+
+    </div>
+  )}
+
+  {/* FOOTER */}
+  <div style={{ textAlign: "center", padding: 20 }}>
+    © 2026 Chemistry Tutor Nepal - V4 Ultimate System
   </div>
 
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-  © 2026 Chemistry Tutoring Nepal
-</div>
-
-</body>
-</html>
+); }
