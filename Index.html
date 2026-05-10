@@ -1,97 +1,145 @@
-import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Chemistry Tutor Nepal</title>
 
-export default function ChemistryTutorWebsite() { const [message, setMessage] = useState("");
+<style>
+  body {
+    margin: 0;
+    font-family: Arial;
+    background: #f5f7fb;
+  }
 
-const whatsappNumber = "9779804989338"; const whatsappLink = https://wa.me/${whatsappNumber};
+  /* HEADER */
+  .header {
+    background: #1e3a8a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
 
-return ( <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+  .logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
 
-{/* HERO SECTION */}
-  <div className="text-center py-16 px-4 bg-blue-900 text-white">
-    <h1 className="text-4xl font-bold">Online Chemistry Tutoring</h1>
-    <p className="mt-3 text-lg">
-      MSc Chemistry Tutor for NEB Class 11 & 12
-    </p>
-    <p className="mt-2 text-sm opacity-80">
-      Concept-based learning • Exam-focused preparation • Easy understanding
-    </p>
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 40px;
+    background: white;
+  }
 
-    <div className="mt-6 flex justify-center gap-4 flex-wrap">
-      <Button className="bg-green-500 hover:bg-green-600">
-        Book Free Demo
-      </Button>
+  .hero img {
+    width: 250px;
+    border-radius: 10px;
+    margin-top: 15px;
+  }
 
-      <a href={whatsappLink} target="_blank">
-        <Button className="bg-white text-blue-900 hover:bg-gray-200">
-          WhatsApp Now
-        </Button>
-      </a>
-    </div>
-  </div>
+  /* SECTIONS */
+  .section {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+  }
 
-  {/* ABOUT */}
-  <div className="max-w-4xl mx-auto p-6">
-    <Card className="mt-6">
-      <CardContent className="p-6">
-        <h2 className="text-2xl font-bold">About Tutor</h2>
-        <p className="text-gray-600 mt-2">
-          I am an MSc Chemistry graduate providing online tuition for NEB
-          students. My teaching style focuses on clear concepts, problem
-          solving, and exam preparation techniques.
-        </p>
-      </CardContent>
-    </Card>
+  .card {
+    background: white;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+  }
 
-    {/* COURSES */}
-    <Card className="mt-6">
-      <CardContent className="p-6">
-        <h2 className="text-2xl font-bold">Courses Offered</h2>
-        <ul className="list-disc ml-6 text-gray-600 mt-2">
-          <li>Class 11 Chemistry (NEB)</li>
-          <li>Class 12 Chemistry (NEB)</li>
-          <li>Entrance Exam Preparation</li>
-          <li>Basic Bachelor Chemistry</li>
-        </ul>
-      </CardContent>
-    </Card>
+  /* BUTTON */
+  .btn {
+    background: #1e3a8a;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 
-    {/* PRICING */}
-    <Card className="mt-6">
-      <CardContent className="p-6">
-        <h2 className="text-2xl font-bold">Pricing</h2>
-        <p className="text-gray-600 mt-2">
-          Individual Class: NPR 500 – 1000/hour <br />
-          Group Class: NPR 500 – 1000/student
-        </p>
-      </CardContent>
-    </Card>
+  .btn:hover {
+    background: #2f4db3;
+  }
 
-    {/* CONTACT */}
-    <Card className="mt-6">
-      <CardContent className="p-6">
-        <h2 className="text-2xl font-bold">Contact</h2>
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 15px;
+    background: #ddd;
+    margin-top: 20px;
+  }
 
-        <p className="text-gray-600 mt-2">
-          📞 +977-9842671201 <br />
-          📧 yourmail@gmail.com
-        </p>
+</style>
+</head>
 
-        <textarea
-          className="w-full mt-4 p-2 border rounded"
-          placeholder="Write your message here..."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
+<body>
 
-        <Button className="mt-3">Send Message</Button>
-      </CardContent>
-    </Card>
-  </div>
+<!-- HEADER -->
+<div class="header">
+  <!-- LOGO -->
+  <img class="logo" src="https://cdn-icons-png.flaticon.com/512/2909/2909769.png" alt="logo">
 
-  {/* FOOTER */}
-  <div className="text-center text-gray-500 py-6">
-    © 2026 Online Chemistry Tutoring | Nepal
-  </div>
+  <h1>Online Chemistry Tutoring</h1>
+  <p>MSc Chemistry Tutor (NEB Class 11 & 12)</p>
 </div>
 
-); }
+<!-- HERO SECTION -->
+<div class="hero">
+  <h2>Learn Chemistry Easily & Smartly</h2>
+  <p>Concept-based teaching | Exam-focused preparation | Free demo class</p>
+
+  <!-- IMAGE -->
+  <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d" alt="chemistry lab">
+
+  <br><br>
+  <button class="btn">Book Free Demo Class</button>
+</div>
+
+<!-- ABOUT -->
+<div class="section">
+
+  <div class="card">
+    <h2>👨‍🏫 About Tutor</h2>
+    <p>
+      MSc Chemistry tutor providing online classes for NEB students.
+      Focus on clear concepts, numericals, and exam success.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>📚 Courses</h2>
+    <ul>
+      <li>Class 11 Chemistry (NEB)</li>
+      <li>Class 12 Chemistry (NEB)</li>
+      <li>Entrance Preparation</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>💰 Fees</h2>
+    <p>Individual: NPR 500–1000/hour</p>
+    <p>Group Class: NPR 500–800/student</p>
+  </div>
+
+  <div class="card">
+    <h2>📞 Contact</h2>
+    <p>WhatsApp: +977-9804989338</p>
+    <p>Email: yourmail@gmail.com</p>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  © 2026 Chemistry Tutoring Nepal
+</div>
+
+</body>
+</html>
